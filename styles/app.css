@@ -1,0 +1,244 @@
+/* ===== GLOBAL ===== */
+:root {
+  --bg: #e9ecf1;               /* page background */
+  --shell: #101115;            /* outer card color (for dark layout) */
+  --panel: #1a1b1f;            /* inner panel */
+  --input: #131417;
+  --border: rgba(255, 255, 255, 0.03);
+  --accent: #ff4f5e;
+  --accent-soft: rgba(255, 79, 94, .12);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.6);
+  --radius-lg: 18px;
+  --radius-md: 10px;
+  --shadow: 0 14px 40px rgba(0,0,0,.25);
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: linear-gradient(160deg, #f4f5f7 0%, #cfd6de 80%);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* ===== LAYOUT ===== */
+main {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .55fr;
+  gap: 1.7rem;
+  padding: 0 1.25rem;
+}
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== SHARED CARD STYLE ===== */
+#List,
+#Form {
+  background: var(--shell);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,.02);
+}
+
+/* ===== LIST PANEL ===== */
+#List {
+  padding: 1.1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 60vh;
+}
+
+/* header inside list */
+#List .list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#List .list-title {
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  font-weight: 600;
+}
+
+#List .list-sub {
+  font-size: .62rem;
+  color: rgba(255,255,255,.25);
+}
+
+/* remove that old "List" text that was in HTML */
+#List > span,
+#List > p {
+  display: none;
+}
+
+/* scroll */
+#List-content {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 3rem);
+}
+
+/* if your JS just injects cards directly inside #List, target them: */
+#List .card {
+  background: var(--panel);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.015);
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+  padding: .7rem .9rem .7rem .7rem;
+  transition: transform 120ms ease, border 120ms ease, background 120ms ease;
+  cursor: pointer;
+  min-height: 3.6rem;
+  position: relative;
+}
+
+/* left red bar */
+#List .card::before {
+  content: "";
+  width: 4px;
+  background: var(--accent);
+  border-radius: 10px;
+  position: absolute;
+  inset: 6px auto 6px 6px;
+}
+
+#List .card:hover {
+  background: #212328;
+  transform: translateY(-2px);
+  border: 1px solid rgba(255, 79, 94, .35);
+}
+
+#List .card-content {
+  margin-left: .9rem; /* to give space after red bar */
+}
+
+/* title */
+#List .card h5 {
+  margin: 0;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* body lines */
+#List .card p {
+  margin: .25rem 0 0;
+  font-size: .7rem;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+/* highlight label names */
+#List .card p strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ===== FORM PANEL ===== */
+#Form {
+  padding: 1.1rem 1.1rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+#Form .form-title {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.45);
+  font-weight: 600;
+  margin-bottom: .25rem;
+}
+
+/* labels */
+#Form .form-label {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.4);
+  margin-bottom: .3rem;
+}
+
+/* inputs */
+#Form .form-control {
+  background: var(--input);
+  border: 1px solid rgba(255,255,255,.02);
+  border-radius: 9px;
+  color: #fff;
+  min-height: 2.6rem;
+  padding: .45rem .65rem;
+  font-size: .83rem;
+  outline: none;
+  transition: border 120ms ease, background 120ms ease;
+}
+
+#Form .form-control:focus {
+  border: 1px solid rgba(255, 79, 94, .5);
+  background: #18191c;
+}
+
+#Form textarea.form-control {
+  min-height: 4.3rem;
+  resize: vertical;
+}
+
+/* color */
+#Form input[type="color"].form-control {
+  padding: .2rem;
+  width: 4.2rem;
+  height: 2.3rem;
+  cursor: pointer;
+}
+
+/* button */
+#btnsave.btn.btn-primary {
+  background: linear-gradient(180deg, #ff5e6f 0%, #ff384e 100%);
+  border: none;
+  border-radius: 9px;
+  padding: .5rem 1.3rem;
+  font-weight: 600;
+  font-size: .82rem;
+  margin-top: .35rem;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 12px 30px rgba(255, 61, 82, .3);
+}
+
+#btnsave.btn.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(255, 61, 82, .35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 1.4rem 0;
+  }
+  main {
+    padding: 0 .8rem;
+  }
+  #Form, #List {
+    border-radius: 14px;
+  }
+}
