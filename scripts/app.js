@@ -1,3 +1,7 @@
+const API= "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks"; 
+
+
+
 function readContentFunction() {
     let title = $("#txtTitle").val().trim();
     let desc = $("#txtDescription").val().trim();
@@ -14,8 +18,10 @@ function readContentFunction() {
 
     // new Task
     let newTask = new Task(title, desc, color, date, budget, status);
-
+    saveTask(newTask);
     displayTask(newTask);
+    const myName = "Carlos Vera";
+    loadTask();
 
     // Clear form
     $("#txtTitle, #txtDescription, #selDate, #numBudget, #selStatus").val("");
@@ -23,11 +29,49 @@ function readContentFunction() {
 
 }
 
+function saveTask(task) {
+    $.ajax({
+        type: "POST",
+        url: API,
+        data: JSON.stringify(task),
+        contentType: "application/json"
+    }).done(function (res) {
+        console.log("Task saved", res);
+        alert("Task saved successfully");
+    }).fail(function (err) {
+        console.error("Error saving task", err);
+        alert("Error saving task");
+    });
+    
+}
+
+function loadTask(){
+    $.ajax({
+        type : "GET",
+        url : API,
+        dataType: "json",
+        success: function(list){
+            $("#List").empty();
+            const filteredTasks = list.filter(task => task.name === "Carlos Vera");
+            if (filteredTasks.length === 0) {
+                $("#List").append('<div class="alert alert-info">No tasks found for Carlos Vera.</div>');
+            } else {
+                filteredTasks.forEach(displayTask);
+            }
+        },
+        error: function(err) 
+        {
+        console.error("Error loading tasks", err);
+        }
+    });    
+}; 
+
+
+
 function testConection() {
     $.ajax({
         type : "GET",
-        url : "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/",
-
+        url : API,
         }).done(function(res){
             console.log("Connection successful", res);
         }).fail(function(err){
@@ -69,6 +113,7 @@ function displayTask(task) {
 function init() {
     console.log("Initialization started...");
     $("#btnsave").click(readContentFunction);
+    loadTask();
 }
 
 window.onload = init;

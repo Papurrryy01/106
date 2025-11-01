@@ -6,5 +6,6 @@ class Task{
         this.date = date;
         this.budget = budget;
         this.status = status;
+        this.name = "Carlos Vera";
     }
 }
